@@ -1,40 +1,44 @@
-
-
 const verbose = true;
 
 const clickOptionsDemo = {
-    waitUntilVisible: false,    // Waiting for it
-    moveTo: true,               // Scroll to it
-    timeout: {
-        before: 200,           // pre-click timeout
-        after: 500,            // post-click timeout
-    },
-    verbose,                    // Enable console logging
-}
+  waitUntilVisible: true, // Waiting for it
+  moveTo: true, // Scroll to it
+  timeout: {
+    before: 2500, // pre-click timeout
+    after: 1250, // post-click timeout
+  },
+  verbose, // Enable console logging
+};
 
-const testDevices = ['Iphone 5', 'HD Screen']
+const testDevices = ["Iphone 5", "HD Screen"];
 
-const { findDeviceByName, excludeDevicesNames } = require('../utils/test_devices_list')
+const {
+  findDeviceByName,
+  excludeDevicesNames,
+} = require("../utils/test_devices_list");
 
+describe("modify device dimensions and run testScenario", function () {
+  excludeDevicesNames().forEach((deviceName) => {
+    it("Device Name: " + deviceName, async function () {
+      const device = findDeviceByName(deviceName);
 
-describe('modify device dimensions and run testScenario', function () {
+      browser.resizeWindow(device.width, device.height);
 
-    it('modifies the device dimensions and then resets it', function () {
-        excludeDevicesNames().map(i => {
-            const device = findDeviceByName(i);
-
-            browser.resizeWindow(device.width, device.height);
-
-            browser.navigateTo('https://www.google.com')
-                .pause(1000)
-                .navigateTo('https://www.google.com')
-                .pause(1000)
-                .sendKeys(element('textarea[name="q"]'), 'what is nightwatch?')
-                .clickExtended(element('input[name="btnK"]'), clickOptionsDemo)
-                .clickExtended('div[jscontroller="w4UyN"]', { waitUntilVisible: true, timeout: { before: 0, after: 100, }, verbose })
-                .clickExtended('span[jsaction="UVNdjb"]', { waitUntilVisible: false, moveTo: false })
-                .clickExtended('div[id="hdtb-tls"]', { verbose })
-                .pause(1000);
+      browser
+        .navigateTo("https://www.google.com")
+        .pause(500)
+        .navigateTo("https://www.google.com")
+        .pause(500)
+        .sendKeys('textarea[name="q"]', "what is nightwatch?")
+        .clickExtended('input[name="btnK"]', clickOptionsDemo)
+        .clickExtended('div[jscontroller="w4UyN"]', {
+          waitUntilVisible: true,
+          timeout: { before: 1000, after: 1000 },
+          verbose,
         })
+        .clickExtended('span[jsaction="UVNdjb"]', { verbose })
+        .clickExtended('div[id="hdtb-tls"]', { verbose })
+        .pause(1000);
     });
+  });
 });
