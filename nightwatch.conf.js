@@ -15,14 +15,19 @@ const os = require("os");
 
 const cpuInfo = os.cpus();
 const cpuCoreCount = cpuInfo.length;
-const availableCores = cpuCoreCount - 1 >= 1 ? cpuCoreCount - 1 : 1;
+const availableCores = cpuCoreCount - 1;
+const workersLimit = 4;
 
 console.warn(`🏗 Using ${availableCores} available CPU cores.`);
 
 module.exports = {
   // An array of folders (excluding subfolders) where your tests are located;
   // if this is not specified, the test source must be passed as the second argument to the test runner.
-  src_folders: ["e2e_tests", "nightwatch/examples"],
+  src_folders: [
+    "e2e_tests/manual/",
+    // "e2e_tests/recordings/",
+    // "nightwatch/examples",
+  ],
 
   // See https://nightwatchjs.org/guide/concepts/page-object-model.html
   page_objects_path: ["nightwatch/page-objects"],
@@ -37,13 +42,18 @@ module.exports = {
   plugins: [],
 
   // See https://nightwatchjs.org/guide/concepts/test-globals.html
-  globals_path: "",
+  globals_path: "./nightwatch/globals/globalModules.js",
 
   webdriver: {},
 
   test_workers: {
-    enabled: true,
-    workers: availableCores,
+    enabled: availableCores > 1,
+    workers:
+      availableCores > 1
+        ? availableCores > workersLimit
+          ? workersLimit
+          : availableCores
+        : 1,
   },
 
   test_settings: {

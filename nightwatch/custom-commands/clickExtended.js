@@ -24,45 +24,41 @@ module.exports = {
   command: async (selector, options = {}) => {
     const verbose = getBool(options?.verbose, false);
     const moveTo = getBool(options?.moveTo, true);
+    const waitUntilPresent = getBool(options?.waitUntilPresent, true);
     const waitUntilVisible = getBool(options?.waitUntilVisible, true);
 
     const beforeTimeout = options?.timeout?.before || 10;
     const afterTimeout = options?.timeout?.after || 10;
 
-    const browserEnvName = browser.options.desiredCapabilities.browserName;
+    const browserEnvName =
+      browser?.options?.desiredCapabilities?.browserName || undefined;
     const log = (args) => verbose && console.log(...args);
 
     log(["selector", selector, typeof selector]);
 
     if (typeof selector !== "string")
       throw Error("Invalid selector type, expected [string]");
-    const elem = element(selector);
 
-    //log(["ELEM : ", elem]);
+    const elem = await browser
+      .waitForElementPresent(selector, 5000)
+      .findElement(selector);
 
-    if (waitUntilVisible) {
-      log(["[clickExtended : waitForElementVisible (" + String(elem) + ")]"]);
-      browser.waitForElementVisible(elem);
-    }
-
-    if (!isNaN(beforeTimeout) && beforeTimeout > 0) {
-      log(["[clickExtended : beforeTimeout (" + String(beforeTimeout) + ")]"]);
-      browser.pause(beforeTimeout);
-    }
-
+    await browser.moveTo(null, 0, 20);
     if (moveTo) {
-      const resultElement = await browser.getLocation(selector);
-      log(["resultElement", resultElement]);
       log(["[clickExtended : moveToElement ]"]);
-      await browser.moveTo(null, resultElement.x, resultElement.y);
+      await browser.moveToElement(selector, 10, 10);
     }
 
-    browser.click(elem);
-
-    if (!isNaN(afterTimeout) && afterTimeout > 0) {
-      log(["[clickExtended : afterTimeout (" + String(afterTimeout) + ")]"]);
-      browser.pause(afterTimeout);
-    }
+    await browser
+      .waitForElementVisible(
+        "css selector",
+        selector,
+        5000,
+        "elemento %s no era presente en %d ms"
+      )
+      .pause(!isNaN(beforeTimeout) && beforeTimeout > 0 ? beforeTimeout : 0)
+      .click(selector)
+      .pause(!isNaN(afterTimeout) && afterTimeout > 0 ? afterTimeout : 0);
 
     return browser;
   },

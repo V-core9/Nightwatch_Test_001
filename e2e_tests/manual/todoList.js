@@ -24,8 +24,9 @@ describe("To-Do List End-to-End Test", async () => {
 
     // adding a new task to the list
     await browser
-      .pause(100)
-      .setDeviceDimensions(deviceDimensions)
+      //.pause(100)
+      //.setDeviceDimensions(deviceDimensions)
+      .windowSize("current", 1280, 720)
       .pause(100)
       .navigateTo(rootURL)
       .pause(100)
@@ -56,5 +57,7 @@ describe("To-Do List End-to-End Test", async () => {
 
     // verify if there are 3 tasks which are marked as done in the list
     await expect.elements("#todo-list ul li input:checked").count.toEqual(3);
+
+    await browser.end();
   });
 });
