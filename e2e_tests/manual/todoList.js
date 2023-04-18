@@ -1,12 +1,5 @@
 const rootURL = `https://todo-vue3-vite.netlify.app/`;
 
-const deviceDimensions = {
-  width: 400,
-  height: 600,
-  deviceScaleFactor: 50,
-  mobile: true,
-};
-
 /**
  * End-to-end test for the sample Vue3+Vite todo app located at
  * https://github.com/nightwatchjs-community/todo-vue
@@ -24,11 +17,9 @@ describe("To-Do List End-to-End Test", async () => {
 
     // adding a new task to the list
     await browser
-      //.pause(100)
-      //.setDeviceDimensions(deviceDimensions)
-      .windowSize("current", 1280, 720)
+      .navigateTo(`https://todo-vue3-vite.netlify.app/`)
       .pause(100)
-      .navigateTo(rootURL)
+      .windowSize("current", 1280, 720)
       .pause(100)
       .sendKeys(todoElement, "what is nightwatch?")
       .pause(100)
