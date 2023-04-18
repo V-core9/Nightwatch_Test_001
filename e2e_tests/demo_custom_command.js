@@ -1,6 +1,6 @@
 describe("modify device dimensions", function () {
-  const todoElement = element('textarea[name="q"]');
-  const searchButton = element('input[name="btnK"]');
+  const todoElement = 'textarea[name="q"]';
+  const searchButton = 'input[name="btnK"]';
 
   const verbose = true;
 
