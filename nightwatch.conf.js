@@ -34,7 +34,8 @@ module.exports = {
   webdriver: {},
 
   test_workers: {
-    enabled: true
+    enabled: true,
+    workers: 2
   },
 
   test_settings: {
@@ -124,7 +125,7 @@ module.exports = {
         start_process: true,
         // Follow https://docs.microsoft.com/en-us/microsoft-edge/webdriver-chromium/?tabs=c-sharp#download-microsoft-edge-webdriver
         // to download the Edge WebDriver and set the location of extracted `msedgedriver` below:
-        server_path: './edge_driver/msedgedriver.exe',
+        server_path: './utils/msedgedriver.exe',
         cli_args: [
           // --verbose
         ]

@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx nightwatch ./e2e_tests --env chrome,edge,firefox && exit 1",
-    "postinstall": "bash -c \"npm run setup_edge_driver\" ",
-    "setup_edge_driver": "bash -c \"rm -f ./utils/msedgedriver.exe ; curl -o ./utils/edgedriver_win64.zip https://msedgedriver.azureedge.net/112.0.1722.39/edgedriver_win64.zip ; unzip -d ./utils/ ./utils/edgedriver_win64.zip ; rm -f ./utils/edgedriver_win64.zip\""
+    "test": "bash -c \"npx nightwatch ./e2e_tests --env chrome,edge,firefox ; open-cli ./tests_output/nightwatch-html-report/index.html \" && exit 1",
+    "postinstall": "sh -c \"npm run setup_edge_driver\" && sh -c \"npm run setup_global_open\" ",
+    "setup_edge_driver": "sh -c \"rm -f ./utils/msedgedriver.exe ; curl -o ./utils/edgedriver_win64.zip https://msedgedriver.azureedge.net/112.0.1722.39/edgedriver_win64.zip ; unzip -d ./utils/ ./utils/edgedriver_win64.zip ; rm -f ./utils/edgedriver_win64.zip\"",
+    "setup_global_open": "sh -c \"npm install --global open-cli\""
   },
   "keywords": [],
   "author": "",
